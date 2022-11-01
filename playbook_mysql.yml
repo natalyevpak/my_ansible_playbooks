@@ -1,6 +1,6 @@
 - hosts: localhost
-  become: yes
-  gather_facts: false
+  become: true
+  
   tasks:
     - name: install python, pip etc
       shell: apt-get -y install "{{ item }}"
