@@ -4,7 +4,7 @@
   become: true
 
   tasks:
-    - name: Installing Mysql  and dependencies
+    - name: install mysql and dependencies
       package:
         name: "{{item}}"
         state: present
