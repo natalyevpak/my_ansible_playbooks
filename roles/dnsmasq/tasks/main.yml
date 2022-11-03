@@ -14,7 +14,7 @@
       - dnsmasq-base
       - dnsmasq-utils
     state: present
-    #update_cache: yes
+    update_cache: yes
   notify: restart dnsmasq
 
 - name: config dnsmasq
