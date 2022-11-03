@@ -1,0 +1,24 @@
+---
+- hosts: servers
+  become: true
+  tasks:
+  - name: create user
+    ansible.builtin.user:
+      name: user1
+      shell: /bin/bash
+      group: users
+      home: "/home/user1"
+
+  - name: generate ssh key
+    user:
+      name: user1
+      generate_ssh_key: true
+      ssh_key_file: .ssh/id_rsa
+      ssh_key_type: rsa
+      ssh_key_bits: 2048
+
+  - name: add autorized key
+    authorized_key:
+      user: user1
+      state: present
+      key: "{{ lookup('file', '/home/user1/.ssh/id_rsa.pub') }}"
