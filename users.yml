@@ -1,0 +1,30 @@
+---
+- hosts: servers
+  become: true
+  
+  vars:
+    password: user1234
+  
+  tasks:
+
+  - name: create group
+    ansible.builtin.group:
+      name: superusers
+      state: present
+
+  - name: create users
+    ansible.builtin.user:
+      name: "{{ item }}"
+      password: "{{ password | password_hash('sha512') }}"
+      shell: /bin/bash
+      group: superusers
+    loop:
+      - user2
+      - user3
+
+  - name: validate sudoers
+    ansible.builtin.lineinfile:
+      path: /etc/sudoers
+      state: present
+      regexp: '^%admin ALL='
+      line: '%superusers ALL=(ALL) ALL'      
