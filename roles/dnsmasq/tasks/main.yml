@@ -1,0 +1,31 @@
+---
+# tasks file for dnsmasq
+
+- name: disable systemd-resolved service
+  ansible.builtin.service:
+    name: systemd-resolved
+    state: stopped
+    enabled: false
+
+- name: install dnsmasq
+  ansible.builtin.apt:
+    name:
+      - dnsmasq
+      - dnsmasq-base
+      - dnsmasq-utils
+    state: present
+    #update_cache: yes
+  notify: restart dnsmasq
+
+- name: config dnsmasq
+  ansible.builtin.template:
+    src: dnsmasq.conf.j2
+    dest: /etc/dnsmasq.conf
+    mode: "0644"
+
+- name: config resolv.conf
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+    mode: "0644"
+  notify: restart dnsmasq
