@@ -1,3 +1,4 @@
+#playbook creates two users and provides them with the ability to become a root
 ---
 - hosts: servers
   become: true
