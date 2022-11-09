@@ -1,0 +1,22 @@
+server {
+        listen 80;
+        root /var/www/html;
+        index index.php index.html index.htm index.nginx-debian.html;
+        server_name _ ;
+
+        location / {
+                try_files $uri $uri/ =404;
+        }
+
+        location ~ \.php$ {
+		fastcgi_split_path_info ^(.+\.php)(/.+)$;
+                include snippets/fastcgi-php.conf;
+                fastcgi_pass 84.201.132.158:9000;
+		fastcgi_index index.php;
+		fastcgi_param  SCRIPT_FILENAME   $document_root$fastcgi_script_name;
+        }
+
+        location ~ /\.ht {
+                deny all;
+        }
+}

@@ -1,0 +1,6 @@
+---
+- hosts: http
+  become: yes
+  roles:
+    - http
+

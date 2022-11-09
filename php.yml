@@ -1,0 +1,5 @@
+---
+- hosts: php
+  become: yes
+  roles:
+    - php

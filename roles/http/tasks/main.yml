@@ -1,0 +1,43 @@
+---
+# tasks file for http
+
+
+- name: install nginx
+  ansible.builtin.apt:
+    name:
+      - nginx
+    state: present
+    update_cache: yes
+
+- ufw:
+    rule: allow
+    port: 80
+    proto: tcp
+
+- name: delete default nginx vhost and symlink
+  file:
+        path: "{{ item }}"
+        state: absent
+  loop:
+        - /etc/nginx/sites-available/default
+        - /etc/nginx/sites-enabled/default
+
+- name: setup nginx vhost
+  template:
+        src: nginx.conf
+        dest: /etc/nginx/sites-available/my-site.conf
+
+- name: create symlink nginx vhost
+  file:
+        src: /etc/nginx/sites-available/my-site.conf
+        dest: /etc/nginx/sites-enabled/my-site.conf
+        state: link
+  notify: restart nginx
+
+- name: add nginx config
+  ansible.builtin.template:
+    src: index.php
+    dest: /var/www/html/index.php
+    owner: www-data
+    group: www-data
+    mode: 0644
