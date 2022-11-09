@@ -13,7 +13,7 @@
   lineinfile:
     dest: /etc/php/7.4/fpm/pool.d/www.conf
     regexp: 'listen = /run/php/php7.4-fpm.sock'
-    line: 'listen = 127.0.0.1:9000'
+    line: 'listen = 9000'
     state: present
 
 - ufw:
